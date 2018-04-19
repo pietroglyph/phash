@@ -5,15 +5,15 @@ import (
 	"testing"
 )
 
-func TestGetHash(t *testing.T) {
+func TestGetHashFromReader(t *testing.T) {
 	file1 := openFile("testdata/soccerball.jpg")
 	defer file1.Close()
 
 	file2 := openFile("testdata/soccerball (copy).jpg")
 	defer file2.Close()
 
-	phash1, _ := GetHash(file1)
-	phash2, _ := GetHash(file2)
+	phash1, _ := GetHashFromReader(file1)
+	phash2, _ := GetHashFromReader(file2)
 
 	expectedHash := "1101100110001110001101010011100000011010000000010111110111101000"
 	if phash1 != expectedHash {
@@ -41,11 +41,11 @@ func TestSimilarImages(t *testing.T) {
 	file5 := openFile("testdata/soccerball (perspective).jpg")
 	defer file5.Close()
 
-	phash1, _ := GetHash(file1)
-	phash2, _ := GetHash(file2)
-	phash3, _ := GetHash(file3)
-	phash4, _ := GetHash(file4)
-	phash5, _ := GetHash(file5)
+	phash1, _ := GetHashFromReader(file1)
+	phash2, _ := GetHashFromReader(file2)
+	phash3, _ := GetHashFromReader(file3)
+	phash4, _ := GetHashFromReader(file4)
+	phash5, _ := GetHashFromReader(file5)
 
 	distance := GetDistance(phash1, phash2)
 	verifyDistanceInRange(t, file2.Name(), distance, 0, 1)
@@ -62,15 +62,15 @@ func TestSimilarImages(t *testing.T) {
 
 func TestGetDistance(t *testing.T) {
 	var distancetests = []struct {
-	hash1    string
-	hash2    string
-	distance int
+		hash1    string
+		hash2    string
+		distance int
 	}{
 		{"0010011100100010000001000101001000101110100101110", "0010011100100010000001000101001000101110100101110", 0},
 		{"0010011100100000000001000101001000101110100101110", "0010011100100010000001000101001000101110100101111", 2},
 		{"1111111111111111111111111111111111111111111111111", "0000000000000000000000000000000000000000000000000", 49},
 	}
-	
+
 	for _, distancetest := range distancetests {
 		distance := GetDistance(distancetest.hash1, distancetest.hash2)
 		if distance != distancetest.distance {
@@ -93,4 +93,3 @@ func verifyDistanceInRange(t *testing.T, comparedImageName string, distance, min
 		t.Errorf("distance with %s => %d, want value between %d and %d", comparedImageName, distance, minDistance, maxDistance)
 	}
 }
-

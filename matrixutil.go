@@ -8,10 +8,9 @@ func reduceMatrix(dctMatrix [][]float64, size int) [][]float64 {
 			newMatrix[x][y] = dctMatrix[x][y]
 		}
 	}
-	
+
 	return newMatrix
 }
-
 
 func calculateMeanValue(dctMatrix [][]float64) float64 {
 	var total float64
@@ -26,7 +25,7 @@ func calculateMeanValue(dctMatrix [][]float64) float64 {
 
 	total -= dctMatrix[0][0]
 
-	avg := total / float64((xSize * ySize) - 1)
+	avg := total / float64((xSize*ySize)-1)
 
 	return avg
 }
